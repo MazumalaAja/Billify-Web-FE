@@ -17,6 +17,8 @@ const useHomePage = () => {
 
   // =====> STATES
   const [input, setInput] = useState({
+    idTeman: null,
+    idItem: null,
     title: "",
     namaTeman: "",
     namaItem: "",
@@ -28,19 +30,33 @@ const useHomePage = () => {
   });
 
   // =====> HANDLE CLICK
-  const handleClickAddTeman = () => {
-    setListTeman(prev => [...prev, { id: Date.now(), namaTeman: input.namaTeman, items: [] }]);
-    setInput(prev => ({ ...prev, namaTeman: "" }));
+  const handleClickTeman = (action, id) => {
+    if (!input.namaTeman.trim() || input.namaTeman == "") return;
+
+    if (action == "add") {
+      setListTeman(prev => [...prev,
+      {
+        id: Date.now(),
+        namaTeman: input.namaTeman,
+        items: [],
+        createdAt: new Date().toISOString().split("T")[0],
+        status: "tidak ada"
+      }]);
+    } else if (action == "edit") {
+      setListTeman(prev => prev.map(data => data.id == id ? { ...data, namaTeman: input.namaTeman } : data));
+    } else {
+      setListTeman(prev => prev.filter(data => data.id !== id))
+    }
+    setInput(prev => ({ ...prev, id: null, namaTeman: "" }));
   }
 
   // =====> HANDLE CHANGE
   const handleChange = (key, value) => {
-    if (value.trim() == "" || value <= 0) return;
     setInput(prev => ({ ...prev, [key]: value }));
   }
 
   // RETURN
-  return { handleClickAddTeman, handleChange, input, listTeman };
+  return { handleClickTeman, handleChange, input, setInput, listTeman };
 }
 
 // =====> EXPORTS
