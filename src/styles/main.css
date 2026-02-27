@@ -10,3 +10,11 @@ body {
   font-family: "poppins", Arial, Helvetica, sans-serif;
   @apply text-gray-700
 }
+
+*::-webkit-scrollbar {
+  @apply w-1.5 bg-white
+}
+
+*::-webkit-scrollbar-thumb {
+  @apply bg-indigo-500 rounded-full border border-indigo-50
+}

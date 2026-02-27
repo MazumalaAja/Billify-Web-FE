@@ -3,36 +3,37 @@ import { FiBook, FiBox, FiEdit, FiEdit2, FiInfo, FiPlus, FiTrash2, FiUser, FiUse
 import CustomSection from "@/components/CustomSection";
 import CustomInput from "@/components/CustomInput";
 import CustomButton from "@/components/CustomButton";
-import { RiAddBoxLine, RiBox3Line, RiCalculatorLine, RiEqualLine, RiPriceTag2Line } from "react-icons/ri";
-import { hasil, pembagian, struk, temanPhoto } from "../assets/images";
-import useHomePage from "../hooks/useHomePage";
+import { RiAddBoxLine, RiBox3Line, RiCalculatorLine, RiEqualLine, RiListCheck, RiListCheck3, RiPriceTag2Line } from "react-icons/ri";
+import { hasil, pembagian, struk, temanPhoto } from "@/assets/images";
+import useHomePage from "@/hooks/useHomePage";
 import { useEffect, useState } from "react";
-import CustomList from "../components/CustomList";
-import CustomModal from "../components/CustomModal";
+import CustomList from "@/components/CustomList";
+import CustomModal from "@/components/CustomModal";
+import Rupiah from "../utils/rupiah";
+import CustomCheckbox from "../components/CustomCheckBox";
 
 
 // =====> MY-SETUP
 const HomePage = () => {
   // =====> USEHOMEPAGE
-  const { handleClickTeman, handleChange, handleClickItem, input, setInput, listTeman, listItem } = useHomePage();
+  const { handleClickTeman, handleChange, handleClickItem, input, setInput, listTeman, listItem, total, handleCheckbox } = useHomePage();
 
   // STATES
   const [open, setOpen] = useState({
     modalEdit: false,
     modalDelete: false,
+    modalItems: false
   })
 
   // =====> USEEFFECT
   useEffect(() => {
-    console.log(listTeman);
-    console.log(listItem);
-    console.log(input.pajak);
     console.log(input)
+    console.log(listTeman);
     localStorage.setItem("listTeman", JSON.stringify(listTeman))
     localStorage.setItem("listItem", JSON.stringify(listItem))
     localStorage.setItem("pajak", JSON.stringify(input.pajak))
     localStorage.setItem("title", JSON.stringify(input.title))
-    // localStorage.clear();
+    // localStorage.removeItem("listTeman");
   }, [listTeman, listItem, input])
   return (
     <>
@@ -102,6 +103,27 @@ const HomePage = () => {
             }} customStyle={`bg-red-500! text-red-50! text-xs sm:text-sm md:text-base`} text={"Kembali"} />
           </div>
         </div>
+      </CustomModal>}
+
+      {/* =====> MODAL PICK ITEMS */}
+      {open.modalItems && <CustomModal customStyle={`flex justify-center items-center p-2`} onClose={() => {
+        setInput(prev => ({ ...prev, idTeman: null }))
+        setOpen(prev => ({ ...prev, modalItems: false }))
+      }}>
+        <CustomSection Icon={RiListCheck} title={`List Produk.`} customStyle={`w-full overflow-auto max-h-[60dvh] md:w-[85vw] lg:w-[60vw] space-y-1`}>
+          {listItem?.map((item, index) => (
+            <div key={index} className="bg-white flex shadow-sm border border-gray-300 rounded-md p-2">
+              <div className="flex gap-2 items-center">
+                <CustomCheckbox checked={listTeman.find(data => data.id == input.idTeman)?.items.find(data => data.idItem == item.id) ?? false} onClick={(checked) => handleCheckbox(input.idTeman, item.id, checked)} />
+
+                <div className="flex flex-col">
+                  <span>{item.namaItem}</span>
+                  <small className="text-gray-400 text-xs">{Rupiah(item.hargaItem)}</small>
+                </div>
+              </div>
+            </div>
+          ))}
+        </CustomSection>
       </CustomModal>}
 
       {/* =====> MAIN PAGE */}
@@ -197,7 +219,7 @@ const HomePage = () => {
               </div>}
 
               <div className="bg-linear-to-r from-indigo-700 to-indigo-200 p-2 px-3 rounded-md text-indigo-50">
-                <h2>Total produk : Rp 0</h2>
+                <h2>Total produk : {Rupiah(total)}</h2>
               </div>
             </>
           }
@@ -205,14 +227,25 @@ const HomePage = () => {
 
         {/* =====> PEMBAGIAN PRODUK */}
         <CustomSection title="Pembagian." Icon={RiCalculatorLine}>
-          <div className=" w-full max-w-80 mx-auto">
+          {listItem.length < 1 || listTeman.length < 1 && <div className=" w-full max-w-80 mx-auto">
             <img src={pembagian} alt="pembagian-picture" />
-          </div>
+          </div>}
 
-          <div className="text-center">
+          {listItem.length < 1 || listTeman.length < 1 && <div className="text-center">
             <h2 className="text-sm md:text-base text-gray-700 mb-2">Data masih kosong!</h2>
             <p className="text-xs md:text-sm text-gray-400 mb-2">Silahkan lengkapi semua data untuk memulai pembagian!</p>
-          </div>
+          </div>}
+
+          <CustomList data={listTeman}>
+            {(item, index) => (
+              <>
+                <CustomButton onClick={() => {
+                  setInput(prev => ({ ...prev, idTeman: item.id }))
+                  setOpen(prev => ({ ...prev, modalItems: true }))
+                }} customStyle={`w-max! p-2! bg-amber-400!`} Icon={RiListCheck3} />
+              </>
+            )}
+          </CustomList>
         </CustomSection>
 
         {/* =====> HASIL AKHIR */}

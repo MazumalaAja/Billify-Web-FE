@@ -84,13 +84,34 @@ const useHomePage = () => {
     setInput(prev => ({ ...prev, idItem: null, namaItem: "", hargaItem: "", jumlahItem: "" }))
   }
 
+  // HANDLE CHECKBOX
+  const handleCheckbox = (idTeman, idItem, checked) => {
+    if (!checked) {
+      if (listTeman.find(data => data.id == idTeman)) {
+        setListTeman(prev => prev.map(data => data.id == idTeman ? { ...data, items: [...data.items, { idItem, jumlahItem: 1 }] } : data))
+      }
+    } else {
+      setListTeman(prev => prev.map(data => data.id == idTeman ? { ...data, items: data.items.filter(dataItem => dataItem.idItem !== idItem) } : data))
+    }
+  }
+
   // =====> HANDLE CHANGE
   const handleChange = (key, value) => {
     setInput(prev => ({ ...prev, [key]: value }));
   }
 
+  // GET TOTAL BELANJA
+  const getTotal = (data) => {
+    return data.reduce((acc, curr) => {
+      return Number(acc) + (Number(curr.hargaItem) * Number(curr.jumlahItem)) + Number(input.pajak ?? 0);
+    }, 0)
+  }
+
+  // TOTAL
+  const total = getTotal(listItem);
+
   // RETURN
-  return { handleClickTeman, handleChange, handleClickItem, input, setInput, listTeman, listItem };
+  return { handleClickTeman, handleChange, handleClickItem, input, setInput, listTeman, listItem, total, handleCheckbox };
 }
 
 // =====> EXPORTS
