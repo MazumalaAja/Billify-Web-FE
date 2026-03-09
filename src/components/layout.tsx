@@ -1,12 +1,13 @@
 // IMPORTS
 import { Outlet } from "react-router";
 import Navbar from "./navbar";
+import { FiClock, FiHome } from "react-icons/fi";
 
 // MY-CODE
 const Layout = () => {
   const navbarData = [
-    { path: "/", label: "Home" },
-    { path: "/history", label: "History" },
+    { path: "/", label: "Home" , Icon:FiHome },
+    { path: "/history", label: "History" , Icon:FiClock },
   ];
 
   return (

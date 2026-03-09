@@ -1,2 +1,7 @@
 /* ===== TAILWINDCSS ===== */
 @import "tailwindcss";
+
+/* ===== ROOT ===== */
+:root {
+  interpolate-size: allow-keywords;
+}
