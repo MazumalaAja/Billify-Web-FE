@@ -5,3 +5,8 @@
 :root {
   interpolate-size: allow-keywords;
 }
+
+/* ===== BODY ===== */
+body {
+  @apply text-gray-700!
+}
