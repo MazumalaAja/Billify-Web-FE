@@ -1,11 +1,11 @@
 // IMPORT
-import type { ElementType} from "react";
+import type { ChangeEvent, ElementType} from "react";
 
 // TYPE
 interface InputProps {
   label?:string,
   type?:string,
-  onChange?:() => void,
+  onChange?:(e:ChangeEvent<HTMLInputElement>) => void,
   value?:string,
   Icon?:ElementType,
 }

@@ -2,6 +2,7 @@
 import { Outlet } from "react-router";
 import Navbar from "./navbar";
 import { FiClock, FiHome } from "react-icons/fi";
+import CustomFooter from "./CustomFooter";
 
 // MY-CODE
 const Layout = () => {
@@ -19,6 +20,7 @@ const Layout = () => {
          <Outlet />
        </div>
       </main>
+      <CustomFooter />
     </>
   );
 };

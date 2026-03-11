@@ -5,38 +5,58 @@ import CustomSection from "../components/customSection";
 import {BsCoin, BsList, BsPencil} from "react-icons/bs";
 import CustomButton from "../components/CustomButton";
 import { RiAddBoxLine, RiCalculatorLine, RiEqualLine } from "react-icons/ri";
-import friends from "../assets/images/group.png"
+import friendsphoto from "../assets/images/group.png"
 import productAdd from "../assets/images/add-product.png"
 import devide from "../assets/images/calculator.png"
 import equal from "../assets/images/equal.png"
+import useHomePage from "../hooks/useHomePage";
+import { useEffect } from "react";
 
 // MY-CODE
 const HomePage = () => {
+  // FUNCTIONS
+  const {input,friends,handleChange,handleClick} = useHomePage();
+
+  useEffect(()=> {
+    localStorage.setItem("friends" , JSON.stringify(friends));
+    localStorage.setItem("event" , JSON.stringify(input.event));
+    localStorage.setItem("tax" , JSON.stringify(input.tax));
+  } ,[friends,input.event,input.tax])
   return (
     <>
       <CustomSection Icon={FiUserPlus} title="Add Friend.">
-        <div className="flex gap-2 flex-col sm:flex-row">
-          <CustomInput label="Friend's Name..." Icon={BsPencil} />
-          <CustomButton label="Add Friend" Icon={FiPlus} customStyle={`text-xs! sm:text-sm! md:text-base justify-center w-full  sm:w-max!`} />
-        </div>
+        <form onSubmit={(e)=> e.preventDefault()} className="flex gap-2 flex-col sm:flex-row">
+          <CustomInput onChange={(e) => {
+              handleChange("friendsName",e.target.value);
+          }} value={input.friendsName} label="Friend's Name..." Icon={BsPencil} />
+          <CustomButton onClick={()=> {
+            handleClick("friends");
+          }} label="Add Friend" Icon={FiPlus} customStyle={`text-xs! sm:text-sm! md:text-base justify-center w-full  sm:w-max!`} />
+        </form>
       </CustomSection>
 
       <CustomSection Icon={FiBook} title="Add Title.">
-        <div>
-          <CustomInput label="Event Title..." Icon={BsPencil} />
-        </div>
+        <form onSubmit={(e)=> e.preventDefault()}>
+          <CustomInput value={input.event} onChange={(e)=> {
+            handleChange("event",e.target.value);
+          }} label="Event Title..." Icon={BsPencil} />
+        </form>
       </CustomSection>
 
       <CustomSection customStyle={`p-4`} Icon={FiUsers} title="Friends List.">
         <div className="flex items-center flex-col">
-          <div>
-            <img className="w-40 mb-3" src={friends} alt="" />
-          </div>
+          {/* ===== WHEN FRIENDS EMPTY */}
+          {friends.length < 1 && <div>
+            <img className="w-40 mb-3" src={friendsphoto} alt="" />
+          </div>}
 
-          <div className="text-center">
+          {friends.length < 1 && <div className="text-center">
             <h2 className="text-base md:text-xl font-medium">Friends list is still empty</h2>
             <p className="text-xs lg:text-base text-gray-400">Please add friends in the add friends form to start sharing.</p>
-          </div>
+          </div>}
+
+          {/* WHEN FRIENDS EXIST */}
+
         </div>
       </CustomSection>
 
@@ -48,7 +68,9 @@ const HomePage = () => {
         </div>
 
         <div className="space-y-3 p-3 border-2 rounded-md border-dashed border-gray-300">
-          <CustomInput type="number" label="Purchasen Tax..." Icon={BsList} />
+          <CustomInput value={input.tax} onChange={(e)=> {
+            handleChange("tax" , e.target.value);
+          }} type="number" label="Purchasen Tax..." Icon={BsList} />
         </div>
       </CustomSection>
 

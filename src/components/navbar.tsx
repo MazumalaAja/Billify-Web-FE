@@ -45,7 +45,7 @@ const Navbar = ({ data = [] }: NavbarData) => {
       </header>
 
       <Modal customStyle={`block sm:hidden`} open={openToggle} onClose={()=> setOpenToggle(false)}>
-        <div onClick={(e)=> e.stopPropagation()} className={`${openToggle ? `h-max` : `h-0`} overflow-hidden duration-200 absolute bg-gray-50 bottom-0  left-0 right-0 rounded-t-4xl shadow-md`}>
+        <div onClick={(e)=> e.stopPropagation()} className={`${openToggle ? `h-max` : `h-0`} overflow-hidden duration-200 absolute bg-gray-50 bottom-0  left-0 right-0 rounded-t-4xl shadow-md border-gray-50 border-2`}>
           <ul className="flex flex-col">
             {data.map((value,index) => (
             <li key={index}>
