@@ -11,11 +11,11 @@ interface ButtonProps {
 }
 
 // MY-CODE
-const CustomButton = ({label = "label",onClick,customStyle,Icon,disabled} : ButtonProps) => {
+const CustomButton = ({label,onClick,customStyle,Icon,disabled} : ButtonProps) => {
   return (
     <>
       <button disabled={disabled} onClick={onClick} className={`${customStyle && customStyle} bg-indigo-500 px-3 p-1.5 text-indigo-50 flex items-center text-nowrap duration-200 rounded-md capitalize gap-2 hover:opacity-80 cursor-pointer active:scale-98`}>
-        <span>{label}</span>
+        <span>{label && label}</span>
         {Icon && <Icon />}
        </button>
     </>

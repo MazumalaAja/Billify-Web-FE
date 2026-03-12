@@ -23,6 +23,13 @@ type friendsType = {
   createdAt:string
 }
 
+type productsType = {
+  id:number,
+  name:string,
+  price:number,
+  createdAt:string
+}
+
 // MY-CODE
 const useHomePage = () => {
   // STATES
@@ -37,6 +44,10 @@ const useHomePage = () => {
   const [friends,setFriends] = useState<friendsType[]>(()=> {
     return getLocalData("friends" , [])
   });
+
+  const [products,setProducts] = useState<productsType[]>(()=> {
+    return getLocalData("products" , []);
+  })
 
   // GETLOCAL DATA
   function getLocalData (localKey:string,defaultValue:any) {
@@ -65,12 +76,20 @@ const useHomePage = () => {
         name:input.friendsName,
         items:[],
         createdAt:new Date().toISOString().split("T")[0]}]));
+        setInput(prev=> ({...prev,friendsName:""}))
+    } else {
+       setProducts(prev=> ([...prev,
+      {
+        id:Date.now(),
+        name:input.productsName,
+        price:Number(input.productsPrice),
+        createdAt:new Date().toISOString().split("T")[0]}]));
+        setInput(prev=> ({...prev,productsName:"" , productsPrice:""}))
     }
-    setInput(prev=> ({...prev,friendsName:""}))
   }
 
   // RETURN
-  return {input, friends, handleChange,handleClick}
+  return {input, products, friends, handleChange,handleClick}
 }
 
 // EXPORT
