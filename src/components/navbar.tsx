@@ -1,7 +1,7 @@
 // IMPORTS
 import type { ElementType } from "react";
 import Logo from "../assets/logo/logo.png";
-import useUIStore from "../stores/zustand";
+import {useUIStore} from "../stores/zustand";
 import Modal from "./modal";
 import NavbarLink from "./navbarLink";
 import SwitchToggle from "./switchToggle";

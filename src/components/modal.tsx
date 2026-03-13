@@ -3,9 +3,9 @@ import {type ReactNode } from "react";
 
 // TYPE
 interface Props {
-  open:boolean,
+  open?:boolean,
   customStyle?:string,
-  onClose : () => void,
+  onClose? : () => void,
   children?:ReactNode
 }
 
